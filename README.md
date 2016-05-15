@@ -7,6 +7,11 @@ Working Title candidates:
 - Medieval escape room
 - Island escape
 
+Team:
+- Lead programmer: Boris Filipović
+- Game designer and producer: Boris Filipović
+- Music artist and producer: Boris Filipović
+
 Software:
 - Blender 2.76 for 3D objects (Designer: Boris Filipović).
 - Pixelmator for textures (Designer: Boris Filipović).
