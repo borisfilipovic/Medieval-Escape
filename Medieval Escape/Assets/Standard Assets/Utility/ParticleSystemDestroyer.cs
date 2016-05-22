@@ -13,6 +13,7 @@ namespace UnityStandardAssets.Utility
 
         public float minDuration = 8;
         public float maxDuration = 10;
+        public bool loop = false;
 
         private float m_MaxLifetime;
         private bool m_EarlyStop;
@@ -32,7 +33,7 @@ namespace UnityStandardAssets.Utility
 
             float stopTime = Time.time + Random.Range(minDuration, maxDuration);
 
-            while (Time.time < stopTime || m_EarlyStop)
+            while ( loop || (Time.time < stopTime || m_EarlyStop))
             {
                 yield return null;
             }
