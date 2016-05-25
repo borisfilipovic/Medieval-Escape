@@ -47,6 +47,9 @@ public class GrabAndDrop : MonoBehaviour {
                 grabbedObject.transform.position = _placeholderLocation.transform.position; // Set grabed object positino to be in front of the camera.
                 grabbedObject.transform.parent = GameObject.Find("FPSController").transform; // Set its parent.
                 grabbedObject.transform.parent = GameObject.Find("FPSController").transform; // Set its parent again.
+
+                // Remove rigidbody from grabbed object.
+                HandleGrabedObjectRigidbody(true);
             }
         }
     }
@@ -90,10 +93,23 @@ public class GrabAndDrop : MonoBehaviour {
 
         ResetGrabedObjectVelocity(); // Reset grabed object velocity, so it will not spin when we release it.
 
+        // Add rigidbody to grabbed object.
+        HandleGrabedObjectRigidbody(false);
+
         grabbedObject.transform.parent = null; // Unparent it.
         grabbedObject = null; // Release object.
         isHoldingObject = false; // Reset flag, so that player can hold new object.
+    }
 
+    private void HandleGrabedObjectRigidbody(bool bool_value)
+    {
+        Rigidbody rb = grabbedObject.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.useGravity = !bool_value;
+            rb.freezeRotation = bool_value;
+            rb.drag = !bool_value ? 0.0f : 100.0f; // If bool_value == false, that means that we droped object, so lets set drag value to 0 again to that object will fall to floor.
+        }
     }
 
     private void ResetGrabedObjectVelocity()
