@@ -3,14 +3,25 @@ using System.Collections;
 
 public class GrabAndDrop : MonoBehaviour {
 
+    /* PUBLIC VARIABLES */
     public GameObject _placeholderLocation;
 
+    /* PRIVATE VARIABLES */
     private GameObject grabbedObject;
     private float grabbedObjectSize = 2.0f;
     private bool isHoldingObject = false;
+    private Constants constantClass;
+
+    void Start() {
+        InitConstantClass();
+    }
+
+    private void InitConstantClass() {
+        constantClass = new Constants();
+    }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () {    
         // Check if we are clicking.
         if (Input.GetMouseButtonDown(0))
         {
@@ -25,11 +36,10 @@ public class GrabAndDrop : MonoBehaviour {
             {
                 if (isHoldingObject)
                 {
-                    DropObject(); // Drop object.
+                    DropObject(); // Drop object.                                       
                 }                
             }
         }
-
     }
 
     private void GrabObject()
@@ -37,8 +47,13 @@ public class GrabAndDrop : MonoBehaviour {
         // 1. Grab object.
         grabbedObject = GetMouseHoverObject(5);
 
+        if(constantClass != null)
+        {
+            InitConstantClass();
+        }
+
         // 2. Positin object in front of player on _placeholder location transform.
-        if (grabbedObject != null && grabbedObject.tag == "Grabbable")
+        if (grabbedObject != null && constantClass != null && grabbedObject.tag == constantClass.GetGrabbableTag()) // Check if object have grabbable tag.
         {
             if (_placeholderLocation != null)
             {
@@ -98,14 +113,19 @@ public class GrabAndDrop : MonoBehaviour {
             rb.freezeRotation = bool_value;
             rb.drag = !bool_value ? 0.0f : 100.0f; // If bool_value == false, that means that we droped object, so lets set drag value to 0 again to that object will fall to floor.
         }
+
+        /*BoxCollider bc = grabbedObject.GetComponent<BoxCollider>();
+        if(bc != null)
+        {
+            bc.enabled = !bool_value;
+        }*/
     }
 
     private void ResetGrabedObjectVelocity()
-    {
+    {        
         if (grabbedObject.GetComponent<Rigidbody>() != null)
         {
             grabbedObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
-    }
-
+    }   
 }
