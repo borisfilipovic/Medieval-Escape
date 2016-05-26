@@ -38,10 +38,11 @@ public class GrabAndDrop : MonoBehaviour {
         grabbedObject = GetMouseHoverObject(5);
 
         // 2. Positin object in front of player on _placeholder location transform.
-        if (grabbedObject != null)
+        if (grabbedObject != null && grabbedObject.tag == "Grabbable")
         {
             if (_placeholderLocation != null)
             {
+                Debug.Log(grabbedObject.tag);
                 isHoldingObject = true; // Set flag to true, so that we can carry only one object.
                 ResetGrabedObjectVelocity(); // Reset velocity.
                 grabbedObject.transform.position = _placeholderLocation.transform.position; // Set grabed object positino to be in front of the camera.
@@ -51,6 +52,10 @@ public class GrabAndDrop : MonoBehaviour {
                 // Remove rigidbody from grabbed object.
                 HandleGrabedObjectRigidbody(true);
             }
+        }
+        else
+        {
+            DropObject();
         }
     }
 
@@ -66,23 +71,6 @@ public class GrabAndDrop : MonoBehaviour {
         }
         else {
             return null;
-        }
-    }
-
-    private void TryGrabObject(GameObject grabObject)
-    {
-        if(grabbedObject == null)
-        {
-            return;
-        }
-
-        grabbedObject = grabObject;
-
-        // Get grabed object size.
-        Renderer tmpRenderer = grabObject.GetComponent<Renderer>();
-        if(tmpRenderer != null)
-        {
-            grabbedObjectSize = tmpRenderer.bounds.size.magnitude;
         }
     }
 
